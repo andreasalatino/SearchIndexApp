@@ -27,7 +27,9 @@ namespace SearchIndexApp {
 
 			Console.WriteLine("Test");
 
-			RunQueries(srchclient);
+			//RunQueries(srchclient);
+			QueryPrice(srchclient);
+
 		}
 
 		// Write search results to console
@@ -70,8 +72,34 @@ namespace SearchIndexApp {
 			options.Select.Add("id");
 			options.Select.Add("link");
 			options.Select.Add("condition");
+			options.Select.Add("price");
+			options.Select.Add("brand");
+			options.Select.Add("size");
 
 			response = srchclient.Search<Item>("*", options);
+			WriteDocuments(response);
+		}
+
+		private static void QueryPrice(SearchClient srchclient) {
+			SearchOptions options;
+			SearchResults<Item> response;
+
+			// Query 2
+			Console.WriteLine("Query #2: Search on 'items', filter on 'Price gt 10', sort by Price in descending order...\n");
+
+			options = new SearchOptions()
+			{
+				OrderBy = { "price desc" }
+			};
+
+			options.Select.Add("id");
+			options.Select.Add("link");
+			options.Select.Add("condition");
+			options.Select.Add("price");
+			options.Select.Add("brand");
+			options.Select.Add("size");
+
+			response = srchclient.Search<Item>("price", options);
 			WriteDocuments(response);
 		}
 	}
