@@ -20,7 +20,7 @@ namespace SearchIndexApp
         [JsonPropertyName("condition")]
         public string Condition { get; set; }
         [JsonPropertyName("price")]
-        public string Price { get; set; }
+        public double Price { get; set; }
         [JsonPropertyName("brand")]
         public string Brand { get; set; }
         [JsonPropertyName("size")]

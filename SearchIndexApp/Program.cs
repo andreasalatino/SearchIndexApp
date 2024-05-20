@@ -6,6 +6,7 @@ using Azure.Search.Documents.Models;
 using SearchIndexApp;
 using Azure.Search;
 using Microsoft.Azure.Search;
+using System;
 
 namespace SearchIndexApp {
 	class Program
@@ -29,12 +30,15 @@ namespace SearchIndexApp {
 
 			//RunQueries(srchclient);
 			QueryPrice(srchclient);
+			//QuerySize(srchclient);
+			//QueryBrand(srchclient);
 
 		}
 
 		// Write search results to console
 		private static void WriteDocuments(SearchResults<Item> searchResults)
 		{
+			var count = searchResults.TotalCount;
 			foreach (SearchResult<Item> result in searchResults.GetResults())
 			{
 				Console.WriteLine(result.Document);
@@ -85,10 +89,11 @@ namespace SearchIndexApp {
 			SearchResults<Item> response;
 
 			// Query 2
-			Console.WriteLine("Query #2: Search on 'items', filter on 'Price gt 10', sort by Price in descending order...\n");
+			Console.WriteLine("Query #2: Search on 'items', sort by Price in descending order...\n");
 
 			options = new SearchOptions()
 			{
+				Filter = "price gt 10",
 				OrderBy = { "price desc" }
 			};
 
@@ -100,6 +105,56 @@ namespace SearchIndexApp {
 			options.Select.Add("size");
 
 			response = srchclient.Search<Item>("price", options);
+			WriteDocuments(response);
+		}
+
+		private static void QuerySize(SearchClient srchclient)
+		{
+			SearchOptions options;
+			SearchResults<Item> response;
+
+			Console.WriteLine("Query #3: Limit search to specific fields ...\n");
+
+			options = new SearchOptions()
+			{
+				SearchFields = { "size" }
+			};
+
+			options.IncludeTotalCount = true;
+
+			options.Select.Add("id");
+			options.Select.Add("link");
+			options.Select.Add("condition");
+			options.Select.Add("price");
+			options.Select.Add("brand");
+			options.Select.Add("size");
+
+			response = srchclient.Search<Item>("TU", options);
+			WriteDocuments(response);
+		}
+
+		private static void QueryBrand(SearchClient srchclient)
+		{
+			SearchOptions options;
+			SearchResults<Item> response;
+
+			Console.WriteLine("Query #3: Limit search to specific fields ...\n");
+
+			options = new SearchOptions()
+			{
+				SearchFields = { "brand" }
+			};
+
+			options.IncludeTotalCount = true;
+
+			options.Select.Add("id");
+			options.Select.Add("link");
+			options.Select.Add("condition");
+			options.Select.Add("price");
+			options.Select.Add("brand");
+			options.Select.Add("size");
+
+			response = srchclient.Search<Item>("Bcr", options);
 			WriteDocuments(response);
 		}
 	}
