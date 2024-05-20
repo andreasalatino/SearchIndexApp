@@ -93,9 +93,12 @@ namespace SearchIndexApp {
 
 			options = new SearchOptions()
 			{
-				Filter = "price gt 10",
+				IncludeTotalCount = true,
+				Filter = "price gt 50",
 				OrderBy = { "price desc" }
 			};
+
+			options.IncludeTotalCount = true;
 
 			options.Select.Add("id");
 			options.Select.Add("link");
@@ -104,7 +107,7 @@ namespace SearchIndexApp {
 			options.Select.Add("brand");
 			options.Select.Add("size");
 
-			response = srchclient.Search<Item>("price", options);
+			response = srchclient.Search<Item>(options);
 			WriteDocuments(response);
 		}
 
@@ -117,10 +120,9 @@ namespace SearchIndexApp {
 
 			options = new SearchOptions()
 			{
+				IncludeTotalCount = true,
 				SearchFields = { "size" }
 			};
-
-			options.IncludeTotalCount = true;
 
 			options.Select.Add("id");
 			options.Select.Add("link");
@@ -142,10 +144,9 @@ namespace SearchIndexApp {
 
 			options = new SearchOptions()
 			{
+				IncludeTotalCount = true,
 				SearchFields = { "brand" }
 			};
-
-			options.IncludeTotalCount = true;
 
 			options.Select.Add("id");
 			options.Select.Add("link");
